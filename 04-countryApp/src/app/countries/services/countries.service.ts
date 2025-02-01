@@ -14,7 +14,8 @@ export class CountriesService {
   private getCountriesRequest( url: string ): Observable<Country[]> {
     return this.http.get<Country[]>( url )
       .pipe(
-        catchError( () => of( [])) // Si ocurre un error, regresa un arreglo vacio.
+        catchError( () => of( [])), // Si ocurre un error, regresa un arreglo vacio.
+        delay( 2000 )
       );
   }
 
@@ -39,8 +40,8 @@ export class CountriesService {
     return this.http.get<Country[]>( url )
     .pipe(
       map( countries => countries.length > 0 ? countries[0]: null ),
-      catchError( (error) => of( null ) ),
-      delay( 200 )
+      catchError( (error) => of( null ) )
+
     );
   }
 }

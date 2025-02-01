@@ -15,7 +15,7 @@
   <div class="col">
     <!-- TODO: Tabla-de-resultados -->
     <hr>
-      <shared-loading-spinner></shared-loading-spinner>
+      <shared-loading-spinner *ngIf="isLoading"></shared-loading-spinner>
 
       <countries-country-table [countries]="countries"></countries-country-table>
   </div>
