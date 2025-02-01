@@ -4,12 +4,14 @@ import {CountriesService} from '../../services/countries.service';
 import {Country} from '../../interfaces/country';
 
 import {CountryTableComponent} from '../../components/country-table/country-table.component';
+import {LoadingSpinnerComponent} from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-by-capital-page',
   imports: [
     SearchBoxComponent,
-    CountryTableComponent
+    CountryTableComponent,
+    LoadingSpinnerComponent
   ],
   templateUrl: './by-capital-page.component.html',
   styles: ``
