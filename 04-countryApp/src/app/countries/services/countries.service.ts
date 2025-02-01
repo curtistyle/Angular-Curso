@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {catchError, map, Observable, of} from 'rxjs';
+import { catchError, map, Observable, of, delay } from 'rxjs';
 import { Country } from '../interfaces/country';
 
 @Injectable({
@@ -11,25 +11,26 @@ export class CountriesService {
 
   constructor( private http: HttpClient ) { }
 
-  searchCapital( capital: string ): Observable<Country[]> {
-    return this.http.get<Country[]>( `${ this.apiUrl }/capital/${ capital }` )
+  private getCountriesRequest( url: string ): Observable<Country[]> {
+    return this.http.get<Country[]>( url )
       .pipe(
-        catchError( (error):Observable<[]> => of([])) // Si ocurre un error, regresa un arreglo vacio.
+        catchError( () => of( [])) // Si ocurre un error, regresa un arreglo vacio.
       );
   }
 
+  searchCapital( capital: string ): Observable<Country[]> {
+    const url: string = `${ this.apiUrl }/capital/${ capital }`;
+    return this.getCountriesRequest( url );
+  }
+
   searchRegion( region: string ): Observable<Country[]> {
-    return this.http.get<Country[]>( `${ this.apiUrl }/region/${ region }` )
-      .pipe(
-        catchError( (error):Observable<[]> => of([]))
-      );
+    const url: string = `${ this.apiUrl }/region/${ region }`;
+    return this.getCountriesRequest( url );
   };
 
   searchCountry( country: string ): Observable<Country[]> {
-    return this.http.get<Country[]>(`${ this.apiUrl }/name/${ country }`)
-      .pipe(
-        catchError( (error):Observable<[]> => of([]))
-      );
+    const url: string = `${ this.apiUrl }/name/${ country }`;
+    return this.getCountriesRequest( url );
   }
 
   searchCountryByAlphaCode( code: string ): Observable<Country | null> {
@@ -38,7 +39,8 @@ export class CountriesService {
     return this.http.get<Country[]>( url )
     .pipe(
       map( countries => countries.length > 0 ? countries[0]: null ),
-      catchError( (error) => of( null ) )
-    )
+      catchError( (error) => of( null ) ),
+      delay( 200 )
+    );
   }
 }
