@@ -13,6 +13,9 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   private debouncerSubscription?: Subscription;
 
   @Input()
+  public initialValue: string = '';
+
+  @Input()
   public placeholder: string = '';
 
   // @Output() onNewCharacter: EventEmitter<Character> = new EventEmitter();
@@ -42,6 +45,8 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   emitValue( value: string ): void {
     this.onValue.emit( value );
   }
+
+
 
   onKeyPress( searchTerm: string ): void {
     this.debouncer.next( searchTerm );
