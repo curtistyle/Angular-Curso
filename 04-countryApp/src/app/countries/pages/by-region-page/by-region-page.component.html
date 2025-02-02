@@ -5,6 +5,7 @@
   <div class="col">
     <!-- search box -->
     <shared-search-box
+      [initialValue]="initialValue"
       (onValue)="searchRegion($event)"
       [placeholder]="'Search by region...'"></shared-search-box>
   </div>

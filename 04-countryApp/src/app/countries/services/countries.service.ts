@@ -37,12 +37,22 @@ export class CountriesService {
 
   searchRegion( region: string ): Observable<Country[]> {
     const url: string = `${ this.apiUrl }/region/${ region }`;
-    return this.getCountriesRequest( url );
-  };
+    return this.getCountriesRequest( url )
+      .pipe(
+        tap( ( countries: Country[] ) => {
+          this.cacheStore.byRegion = { region: region, countries: countries };
+        })
+      );
+  }
 
   searchCountry( country: string ): Observable<Country[]> {
     const url: string = `${ this.apiUrl }/name/${ country }`;
-    return this.getCountriesRequest( url );
+    return this.getCountriesRequest( url )
+      .pipe(
+        tap( ( countries: Country[] ) => {
+          this.cacheStore.byCountries = { term: country, countries: countries };
+        })
+      );
   }
 
   searchCountryByAlphaCode( code: string ): Observable<Country | null> {

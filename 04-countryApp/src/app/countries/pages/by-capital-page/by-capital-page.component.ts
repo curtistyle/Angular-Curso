@@ -37,6 +37,5 @@ export class ByCapitalPageComponent implements OnInit{
         this.countries = countries;
         this.isLoading = false;
       } );
-    console.log( 'From capital input-box: ', value );
   }
 }
