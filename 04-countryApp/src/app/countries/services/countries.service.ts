@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { catchError, map, Observable, of, delay, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { CacheStore } from '../interfaces/cache-store.interface';
-import {catchError, map, Observable, of, delay, tap} from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 import { Country } from '../interfaces/country';
-import {Region} from '../interfaces/region.type';
+import { Region } from '../interfaces/region.type';
+import { CacheStore } from '../interfaces/cache-store.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +17,11 @@ export class CountriesService {
     byRegion   : { region: '', countries: [] }
   }
 
-  constructor( private http: HttpClient ) {
-    this.loadFromLocalStorage()
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+    ) {
+    if (isPlatformBrowser(this.platformId)) this.loadFromLocalStorage();
   }
 
   private saveToLocalStorage() {
@@ -25,9 +29,14 @@ export class CountriesService {
   }
 
   private loadFromLocalStorage() {
-    if ( !localStorage.getItem( 'cacheStorage') ) return;
-
-    this.cacheStore = JSON.parse( localStorage.getItem( 'cacheStorage' )! );
+    try{
+      if ( !localStorage.getItem( 'cacheStorage') ) return;
+      this.cacheStore = JSON.parse( localStorage.getItem( 'cacheStorage' )! );
+      console.info( this.cacheStore );
+    } catch (error) {
+      console.error( 'Error reading from local storage ', error );
+      return ;
+    }
   }
 
   private getCountriesRequest( url: string ): Observable<Country[]> {
@@ -76,7 +85,8 @@ export class CountriesService {
     return this.http.get<Country[]>( url )
     .pipe(
       map( countries => countries.length > 0 ? countries[0]: null ),
-      catchError( (error) => of( null ) )
+      catchError( (error) => of( null ) ),
+
     );
   }
 }
