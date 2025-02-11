@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { Menu } from 'primeng/menu';
-import { ToastModule } from 'primeng/toast';
-import { MenubarModule } from 'primeng/menubar';
-import {NgIf} from '@angular/common';
-import {RouterLink} from '@angular/router';
+
+import { Menubar } from 'primeng/menubar';
 
 
 
@@ -12,7 +9,7 @@ import {RouterLink} from '@angular/router';
   selector: 'shared-menu',
   templateUrl: './menu.component.html',
   standalone: true,
-  imports: [Menu, ToastModule, MenubarModule, NgIf, RouterLink]
+  imports: [Menubar]
 })
 export class MenuComponent implements OnInit {
   items: MenuItem[] | undefined;

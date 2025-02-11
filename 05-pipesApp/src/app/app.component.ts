@@ -5,7 +5,6 @@ import { PrimeNG } from 'primeng/config';
 import { MenuComponent } from './shared/components/menu/menu.component';
 
 
-
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, MenuComponent],
