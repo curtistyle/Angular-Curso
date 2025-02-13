@@ -1,0 +1,20 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.bg-color-primary{
+  background-color: rgba(81, 0, 115, 0.7);
+}
+
+.bg-color-secundary{
+  background-color: rgb(241, 74, 0, 0.7);
+}
+
+.bg-navy{
+  background-color: rgb(42, 0, 78);
+}
+
+.br-red{
+  background-color: rgb(198, 35, 0);
+}
+
