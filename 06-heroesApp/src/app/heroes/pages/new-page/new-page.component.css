@@ -1,0 +1,38 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* background color */
+.bg-color-primary{
+  background-color: rgba(81, 0, 115, 0.7);
+}
+
+.bg-color-secundary{
+  background-color: rgb(241, 74, 0, 0.7);
+}
+
+.bg-navy{
+  background-color: rgb(42, 0, 78);
+}
+
+.bg-red{
+  background-color: rgb(198, 35, 0);
+}
+
+/* text color */
+.text-color-primary{
+  color: rgba(81, 0, 115, 0.7);
+}
+
+.text-color-secundary{
+  color: rgb(241, 74, 0, 0.7);
+}
+
+.text-navy{
+  color: rgb(42, 0, 78);
+}
+
+.text-red{
+  color: rgb(198, 35, 0);
+}
+
