@@ -1,0 +1,9 @@
+<h1 class="mx-2">Lista de Heroes</h1>
+<hr>
+
+<div class="grid mb-8">
+  <div *ngFor="let hero of heroes" class="col-12 sm:col-4 md:col-3 xl:col-3">
+    <heroes-hero-card [hero]="hero"></heroes-hero-card>
+  </div>
+</div>
+
