@@ -1,5 +1,6 @@
 
 <!-- w-30rem -->
+<mat-card ngClass="p-4">
 <div class="flex flex-column w-30rem">
     <span class="text-lg mb-4">Login</span>
     <mat-form-field>
@@ -12,11 +13,14 @@
       <input type="password" matInput placeholder="Contrasena">
     </mat-form-field>
     <!-- class="w-10rem align-self-center" -->
-    <button mat-button mat-flat-button color="primary" class="w-10rem align-self-center">
+    <button mat-button mat-flat-button color="primary" class="w-10rem align-self-center"
+    (click)="onLogin()">
       <mat-icon>login</mat-icon>
       Ingresar
     </button>
     <div class="flex justify-content-end mt5">
       <a mat-button routerLink="/auth/new-account">¿No tienes cuenta?</a>
     </div>
-</div>
+
+  </div>
+</mat-card>

@@ -7,7 +7,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
+import { AuthService } from '../../services/auth.service';
 
 
 
@@ -31,5 +32,18 @@ import { RouterLink } from '@angular/router'
   styleUrl: './login-page.component.css'
 })
 export class LoginPageComponent {
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {
 
+  }
+
+  public onLogin(): void {
+    console.log('LOGIN!');
+    this.authService.login('fernando@gmail.com', '123445')
+      .subscribe( user => {
+        this.router.navigate(['/']);
+      } );
+  }
 }

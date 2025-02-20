@@ -1,8 +1,8 @@
 
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { NgStyle } from '@angular/common'
-import { NgFor } from '@angular/common'
+import { NgFor, NgIf } from '@angular/common'
 import { NgClass } from '@angular/common'
 import { RouterLink } from '@angular/router';
 
@@ -11,6 +11,9 @@ import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button';
 import { MatNavList, MatListItem, MatListItemIcon } from '@angular/material/list';
+import { AuthService } from '../../../auth/services/auth.service';
+import { User } from '../../../auth/interfaces/user.interface';
+
 
 @Component({
   selector: 'app-layout-page',
@@ -20,6 +23,7 @@ import { MatNavList, MatListItem, MatListItemIcon } from '@angular/material/list
     NgClass,
     NgFor,
     RouterLink,
+    NgIf,
 
     MatListItemIcon,
     MatListItem,
@@ -38,4 +42,19 @@ export class LayoutPageComponent {
     { label: 'Anadir', icon: 'add', url: './new-hero'},
     { label: 'Buscar', icon: 'search', url: './search'},
   ]
+
+  constructor (
+    private authService: AuthService,
+    private router: Router
+  ) {
+
+  }
+  get user(): User | undefined {
+    return this.authService.currentUser;
+  }
+
+  public onLogOut(): void {
+    this.authService.logOut();
+    this.router.navigate(['/auth/login'])
+  }
 }
