@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
+
+
+
+import { AuthService } from './auth/services/auth.service';
 
 
 @Component({
@@ -10,6 +12,14 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent  {
   title = 'heroesApp';
+
+  constructor (
+    private authService: AuthService
+  ) {}
+
+
+
+
 }
