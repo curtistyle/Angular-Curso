@@ -23,7 +23,7 @@ export class SwitchesPageComponent implements OnInit{
 
   public person = {
     gender: 'F',
-    wantNotifications: false
+    wantNotification: false
   }
 
   public ngOnInit(): void {
@@ -36,7 +36,7 @@ export class SwitchesPageComponent implements OnInit{
       return;
     }
 
-    // crea un nuevo objeto (newPerson) sin la propiedad tersAndConditions de this.myForm.value
+    // crea un nuevo objeto (newPerson) sin la propiedad termsAndConditions de this.myForm.value
     const { termsAndConditions, ...newPerson } = this.myForm.value;
 
     this.person = newPerson;
