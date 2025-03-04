@@ -1,0 +1,13 @@
+li{
+cursor: pointer;
+transition: 0.3s all;
+}
+
+ul{
+  opacity: 0.5; /* El elemento es semi-transparente por defecto */
+  transition: opacity 0.3s ease; /* Suaviza la transición de la opacidad */
+}
+
+ul:hover {
+  opacity: 1;
+}
