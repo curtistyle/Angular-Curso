@@ -1,0 +1,14 @@
+<p>product works!</p>
+
+<div style="justify-content: space-evenly; display: flex;">
+  <button class="button-7" role="button" (click)="isProductVisible = !isProductVisible">Toggle</button>
+  <button class="button-7" role="button" (click)="incresePrice()"> +1 Price </button>
+</div>
+
+<hr>
+<products-price-page
+  *ngIf="isProductVisible"
+  [price]="currentPrice"
+/>
+
+
