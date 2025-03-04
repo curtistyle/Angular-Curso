@@ -1,0 +1,22 @@
+.map-container {
+  width: 100%;
+  height: 90vh; /* Altura personalizable */
+  margin: 20px 0;
+}
+
+#zoom-control-container {
+  bottom: 50px;
+  right: 50px;
+  position: absolute;
+}
+
+#rotate-control-container {
+  bottom: 100px;
+  right: 50px;
+  position: absolute;
+}
+
+#mouse-position-control-container {
+  color: black;
+
+}
