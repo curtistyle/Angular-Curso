@@ -6,17 +6,22 @@ import { Rotate, Zoom, MousePosition } from 'ol/control';
 import { Coordinate } from 'ol/coordinate'
 import { DecimalPipe } from '@angular/common';
 
+
 @Component({
   selector: 'app-zoom-range-page',
   imports: [DecimalPipe],
   templateUrl: './zoom-range-page.component.html',
   styleUrl: './zoom-range-page.component.css'
 })
-export class ZoomRangePageComponent implements AfterViewInit, OnDestroy {
+export class ZoomRangePageComponent implements OnInit,AfterViewInit, OnDestroy {
   public map?: Map;
   public zoom: number = 3;
   public xy: Coordinate = [0,0]
   public xyMouse: any;
+
+  ngOnInit(): void {
+
+  }
 
   ngAfterViewInit(): void {
     this.map = new Map({

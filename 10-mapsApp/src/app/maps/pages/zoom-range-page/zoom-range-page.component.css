@@ -44,6 +44,10 @@ button{
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
 }
 
+.floating-info.label{
+  display: flex;
+}
+
 .info-content{
   display: flex;
   padding: 10px;
@@ -52,4 +56,12 @@ button{
 .coordinates-info{
   position: fixed;
   bottom: 1px;
+}
+
+#dropstart-float{
+  position: fixed;
+  top: 30px;
+  right: 10px;
+  z-index: 999;
+  width: 180px;
 }

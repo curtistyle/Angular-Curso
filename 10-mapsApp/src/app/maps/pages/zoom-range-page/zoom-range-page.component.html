@@ -5,12 +5,12 @@
     <button (click)="zoomOut()" class="btn btn-primary">-</button>
 
     <input type="range"
-    class="form-range px-2"
-    min="3"
-    max="12"
-    #zoomInput
-    (input)="zoomChange(zoomInput.value)"
-    [value]="zoom"
+      class="form-range px-2"
+      min="3"
+      max="12"
+      #zoomInput
+      (input)="zoomChange(zoomInput.value)"
+      [value]="zoom"
     >
 
     <button (click)="zoomIn()" class="btn btn-primary">+</button>
@@ -19,8 +19,9 @@
 
 <div class="floating-info" data-bs-theme="light">
 
-    <label class="form-label" for="">Zoom: {{ this.zoom | number:'2.1-1' }}</label>
+    <span>Zoom: {{ this.zoom | number:'2.1-1' }}</span>
 
 </div>
 
-<div id="coordinates-info" class="custom-control bg-primary text-center"></div>
+<div id="coordinates-info" class="bg-primary text-center"></div>
+
