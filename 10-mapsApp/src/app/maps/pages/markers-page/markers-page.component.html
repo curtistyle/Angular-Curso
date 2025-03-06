@@ -1,0 +1,24 @@
+<div *ngIf="inputMarkerEdit" id="input-edit-marker" class="input-group d-flex align-items-center p-2 bg-body-tertiary opacity-75">
+  <img [src]="inputMarkerEdit.icon" alt=""  height="30px" class="me-2">
+
+    <input (keypress)="saveEditMarker($event)" type="text" class="form-control" [value]="inputMarkerEdit.name" placeholder="Name marker">
+</div>
+
+<div id="list-mark" class="list-group min-vh-25">
+  <button *ngFor="let item of listMarker"
+  type="button"
+  class="list-group-item list-group-item-action"
+  (click)="showEditMarker(item)"
+  >
+
+  <img [src]="item.icon" alt="" width="15px"/>
+    {{ item.name }}
+
+  </button>
+</div>
+
+<div id="map-container" class="map-container"></div>
+<div id="coordinates-info" class="bg-primary text-center">
+  <span>Crtl + Click-Left: Add Marker</span>
+</div>
+
