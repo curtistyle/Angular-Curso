@@ -1,0 +1,11 @@
+<div *ngIf="isNavbar(); then thenBlock else elseBlock"></div>
+
+<ng-template #thenBlock>
+  <maps-nav-menu></maps-nav-menu>
+</ng-template>
+
+<ng-template #elseBlock>
+  <maps-side-menu ></maps-side-menu>
+</ng-template>
+
+<router-outlet></router-outlet>
