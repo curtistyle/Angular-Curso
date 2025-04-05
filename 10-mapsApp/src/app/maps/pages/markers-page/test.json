@@ -1,0 +1,38 @@
+[
+  {
+    "coordinates": [
+      -1010740.7030793987,
+      -584712.1381719019
+    ],
+    "name": "1 Mark",
+    "icon": "map-icon-marker.png",
+    "id": 1
+  },
+  {
+    "coordinates": [
+      3293056.724981591,
+      -101262.93752055895
+    ],
+    "name": "2 Mark",
+    "icon": "map-icon-marker.png",
+    "id": 2
+  },
+  {
+    "coordinates": [
+      -3919064.220615348,
+      565112.8502949742
+    ],
+    "name": "3 Mark",
+    "icon": "map-icon-marker.png",
+    "id": 3
+  },
+  {
+    "coordinates": [
+      -6305715.5216309875,
+      -1094293.9220334152
+    ],
+    "name": "4 Mark",
+    "icon": "map-icon-marker.png",
+    "id": 4
+  }
+]

@@ -17,6 +17,7 @@ import VectorSource from 'ol/source/Vector';
 import Translate from 'ol/interaction/Translate'; // Interacción para arrastrar marcadores
 import BaseEvent from 'ol/events/Event';
 import { VectorSourceEvent } from 'ol/source/Vector';
+import { LocalStorageService } from '../../services/local-storage.service';
 
 interface Marker {
   id         : number;
@@ -32,18 +33,32 @@ interface Marker {
   styleUrl: './markers-page.component.css'
 })
 
-
-
-export class MarkersPageComponent implements AfterViewInit {
+export class MarkersPageComponent implements AfterViewInit, OnDestroy {
   public map?: Map;
   public xy: Coordinate = [0,0]
   public zoom: number = 3;
   public listMarker: Marker[] = [];
   public inputMarkerEdit: Marker | undefined;
 
-
   private vectorSource = new VectorSource();
   private vectorLayer = new VectorLayer({ source: this.vectorSource });
+  private translateInteraction! : Translate;
+
+
+  constructor( private localStorageService: LocalStorageService ) {
+
+    this.localStorageService.loadMarkers().subscribe(
+      { next: (features) => {
+        this.vectorSource.addFeatures(features);
+
+        features.forEach( value => this.addListMarker(value) )
+      } }
+    )
+  }
+  ngOnDestroy(): void {
+    this.translateInteraction?.dispose()
+    this.map?.dispose()
+  }
 
   ngAfterViewInit(): void {
     this.map = new Map({
@@ -53,25 +68,44 @@ export class MarkersPageComponent implements AfterViewInit {
       controls: []
     })
 
-    this.listMarker;
-
     this.map?.on('click', (event) =>{
       this.handleMapClick(event);
     })
 
-    const translateInteraction = new Translate({
+    this.translateInteraction= new Translate({
       layers: [this.vectorLayer], // Solo afecta a la capa de marcadores
       hitTolerance: 5 // Tolerancia para seleccionar marcadores
     });
-    this.map.addInteraction(translateInteraction);
+    this.map.addInteraction(this.translateInteraction);
+
+    this.translateInteraction.on('translateend', (ev) => {
+      this.localStorageService.saveMarkers(this.vectorSource.getFeatures()).subscribe({
+        next: () => console.log('marcadores guardaddos en localStorage')
+      })
+
+      const current = ev.features.getArray()[0]
+
+      this.listMarker.forEach( marker => {
+        if ( marker.id === ev.features.getArray().at(0)?.getId() ){
+          console.log(`${marker.id} coordinateEnd`, current)
+          marker.coordiante = (current.getGeometry() as Point).getCoordinates();
+        }
+      })
+
+      this.vectorSource.forEachFeature( feature => {
+        console.log(feature.getId(), ' - ',(feature.getGeometry() as Point).getCoordinates())
+      })
+    })
 
     this.vectorSource.on('addfeature', (ev: VectorSourceEvent) => {
-      //const style = ev.feature?.getStyle() as Style;
-      //console.log(style?.getText()?.getText());
-      //console.log((feature.getGeometry() as Point).getCoordinates())
       const feature: Feature<Geometry> = ev.feature!;
       this.addListMarker(feature);
+      this.localStorageService.saveMarkers(this.vectorSource.getFeatures()).subscribe({
+        next: () => console.log('marcadores guardaddos en localStorage')
+      });
     })
+
+
   }
 
   private handleMapClick(event: MapBrowserEvent<any>): void {
@@ -83,6 +117,12 @@ export class MarkersPageComponent implements AfterViewInit {
 
   public showEditMarker(marker: Marker): void {
     this.inputMarkerEdit = marker;
+    const currentMark = this.listMarker.filter( mark => mark.id === marker.id)[0]
+
+
+
+    console.log('goToMark: ', currentMark.coordiante)
+    this.goToMarker(currentMark.coordiante);
   }
 
   public saveEditMarker(ev: KeyboardEvent): void {
@@ -91,25 +131,22 @@ export class MarkersPageComponent implements AfterViewInit {
       const value = (ev.target as HTMLInputElement).value;
       this.inputMarkerEdit!.name = value;
       this.uploadMaker(this.inputMarkerEdit!);
+
+      this.localStorageService.saveMarkers(this.vectorSource.getFeatures()).subscribe({
+        next: () => console.log('marcadores guardaddos en localStorage')
+      })
+
       delete this.inputMarkerEdit;
     }
   }
 
   private uploadMaker(marker: Marker): void {
-
     this.vectorSource.getFeatureById(marker.id)?.setStyle(this.createStyle(marker.name, 'map-icon-marker.png'));
-
-    /* const feature: Feature<Geometry> = this.vectorSource.getFeatureById(marker.id)!;
-    (feature.getStyle()! as Style).getText()!.setText(marker.name);
-    console.log(feature);
-    console.log(marker) */
-
     this.listMarker.forEach( (item) => {
       if (item.id === marker.id){
-        console.log('lo encontro', marker)
         item.name = marker.name
       }
-    } )
+    })
   }
 
   private addMaker(coordinate: Coordinate) {
@@ -117,7 +154,7 @@ export class MarkersPageComponent implements AfterViewInit {
       geometry: new Point(coordinate)
     });
 
-    const id: number = this.vectorSource.getRevision() + 1;
+    const id: number = this.vectorSource.getFeatures().length + 1;
 
     marker.setStyle(
       this.createStyle(`${id} Mark`, 'map-icon-marker.png')
@@ -127,16 +164,17 @@ export class MarkersPageComponent implements AfterViewInit {
 
     this.vectorSource.addFeature(marker);
   }
-//'map-icon-marker.png'
+
   private createStyle(name: string, icon: string): Style {
     return new Style({
       image: new Icon({
         src: 'map-icon-marker.png',
-        scale: 0.8
+        scale: 0.8,
+        anchor: [0.5, 1]
       }),
       text: new Text({
         text: name,
-        offsetY: 20
+        offsetY: 10
       })
     })
   }
@@ -160,4 +198,27 @@ export class MarkersPageComponent implements AfterViewInit {
     }
     return marker
   }
+
+  private goToMarker(coordinates: Coordinate): void {
+    const view = this.map?.getView()
+
+    view?.animate({
+      center: coordinates,
+      zoom: 13,
+      duration: 1500
+    })
+
+  }
+
+  public deleteMarker(id: number) {
+    const feature = this.vectorSource.getFeatureById(id) as Feature<Geometry>;
+    this.vectorSource.removeFeature(feature);
+
+    this.listMarker = this.listMarker.filter( marker => marker.id !== id );
+
+    this.localStorageService.saveMarkers(this.vectorSource.getFeatures()).subscribe({
+      next: () => console.log('marcadores guardaddos en localStorage')
+    });
+  }
+
 }

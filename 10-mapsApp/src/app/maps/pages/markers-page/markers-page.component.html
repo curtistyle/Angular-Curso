@@ -4,18 +4,22 @@
     <input (keypress)="saveEditMarker($event)" type="text" class="form-control" [value]="inputMarkerEdit.name" placeholder="Name marker">
 </div>
 
-<div id="list-mark" class="list-group min-vh-25">
-  <button *ngFor="let item of listMarker"
-  type="button"
-  class="list-group-item list-group-item-action"
-  (click)="showEditMarker(item)"
-  >
+<div id="list-mark" class="list-group min-vh-25 bg-body opacity-75">
 
-  <img [src]="item.icon" alt="" width="15px"/>
-    {{ item.name }}
-
+  <div *ngFor="let marker of listMarker" class="d-flex justify-content-between align-items-center ">
+    <button
+    class="btn btn-group align-items-center text-nowrap"
+    (click)="showEditMarker(marker)">
+    <img class="me-1" [src]="marker.icon" alt="" width="16px">
+    <!-- cambiar por un pipe -->
+    {{  marker.name.length > 13 ?  marker.name.slice(0, 13) + '...' : marker.name }}
   </button>
+    <a class="me-2" (click)="deleteMarker(marker.id)"><img [src]="'trash3.svg'" alt="" width="16px"/></a>
+  </div>
+
 </div>
+
+
 
 <div id="map-container" class="map-container"></div>
 <div id="coordinates-info" class="bg-primary text-center">
